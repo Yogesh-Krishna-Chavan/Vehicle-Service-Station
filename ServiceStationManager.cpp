@@ -6,16 +6,25 @@
 #include <chrono>
 #include <limits>
 #include <iomanip>
+#include "Customer.h"
 
 void ServiceStationManager::newCustomer()
 {
-    Customer newCustomer("John Doe", "123 Main St", "555-1234");
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 
-    // Get customer details from the user
-    std::cin >> newCustomer;
+    std::cout << "Enter customer details:\n";
+    std::string name, address, mobileNumber;
 
-    // Clear the newline character from the buffer
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cout << "Name: ";
+    std::getline(std::cin, name);
+
+    std::cout << "Address: ";
+    std::getline(std::cin, address);
+
+    std::cout << "Mobile Number: ";
+    std::getline(std::cin, mobileNumber);
+
+    Customer newCustomer(name, address, mobileNumber);
 
     // For simplicity, let's assume the customer can have only one vehicle
     std::cout << "Enter vehicle details:\n";
@@ -137,7 +146,7 @@ void ServiceStationManager::loadCustomersFromFile(const std::string &filename)
 
 void ServiceStationManager::storeCustomersToFile(const std::string &filename)
 {
-    std::ofstream file("customer_data.txt"); // Replace "customer_data.txt" with your actual file name
+    std::ofstream file(filename); // Use the provided filename parameter
 
     if (!file.is_open())
     {
@@ -145,9 +154,9 @@ void ServiceStationManager::storeCustomersToFile(const std::string &filename)
         return;
     }
 
-    for (const auto &bill : billList)
+    for (const auto &customer : customerList) // Iterate over customerList, not billList
     {
-        file << bill.getMaintenanceCharges();
+        file << customer;
     }
 
     file.close();

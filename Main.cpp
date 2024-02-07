@@ -1,17 +1,8 @@
-// main.cpp
 #include "ServiceStationManager.h"
 #include <iostream>
-#include <fstream>
-#include <cstring>
-#include <list>
-#include <iomanip>
-#include <vector>
-#include <algorithm>
-#include <chrono>
 #include <limits>
 
 int main()
-
 {
     ServiceStationManager manager;
     const std::string customerDataFile = "customer_data.txt"; // Change the filename as needed
@@ -32,9 +23,7 @@ int main()
             std::cout << "Invalid input. Please enter a number.\n";
         }
 
-        // Clear the newline character from the input buffer
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
+        // Handle valid choices
         switch (choice)
         {
         case 1:
@@ -46,8 +35,16 @@ int main()
         case 3:
             manager.displayTodayBusiness();
             break;
-            // Add more cases as needed
+        case 4:
+            std::cout << "Exiting the program.\n";
+            break;
+        default:
+            std::cout << "Invalid choice. Please enter a valid option.\n";
         }
+
+        // Clear the input buffer
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
     } while (choice != 4);
 
     manager.storeCustomersToFile(customerDataFile);
