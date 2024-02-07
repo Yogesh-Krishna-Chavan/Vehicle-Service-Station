@@ -23,6 +23,7 @@ public:
     std::string getName() const;
     std::string getAddress() const;
     std::string getMobileNumber() const;
+    const std::vector<Vehicle> &getVehicles() const;
 
     void addVehicle(const Vehicle &vehicle);
 

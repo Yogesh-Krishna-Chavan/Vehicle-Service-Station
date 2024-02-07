@@ -124,7 +124,7 @@ void ServiceStationManager::displayTodayBusiness()
 
 void ServiceStationManager::loadCustomersFromFile(const std::string &filename)
 {
-    std::ifstream file("customer_data.txt"); // Replace "customer_data.txt" with your actual file name
+    std::ifstream file(filename);
 
     if (!file.is_open())
     {
@@ -132,13 +132,17 @@ void ServiceStationManager::loadCustomersFromFile(const std::string &filename)
         return;
     }
 
-    billList.clear();
+    customerList.clear();
 
-    while (!file.eof())
+    while (file)
     {
         Customer customer;
         file >> customer;
-        customerList.push_back(customer);
+
+        if (!file.fail())
+        {
+            customerList.push_back(customer);
+        }
     }
 
     file.close();
@@ -146,7 +150,7 @@ void ServiceStationManager::loadCustomersFromFile(const std::string &filename)
 
 void ServiceStationManager::storeCustomersToFile(const std::string &filename)
 {
-    std::ofstream file(filename); // Use the provided filename parameter
+    std::ofstream file(filename);
 
     if (!file.is_open())
     {
@@ -154,7 +158,7 @@ void ServiceStationManager::storeCustomersToFile(const std::string &filename)
         return;
     }
 
-    for (const auto &customer : customerList) // Iterate over customerList, not billList
+    for (const auto &customer : customerList)
     {
         file << customer;
     }

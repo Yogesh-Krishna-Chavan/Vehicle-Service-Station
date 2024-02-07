@@ -5,7 +5,7 @@
 int main()
 {
     ServiceStationManager manager;
-    const std::string customerDataFile = "customer_data.txt"; // Change the filename as needed
+    const std::string customerDataFile = "E:\\SUNBEAM_OFFICIAL_TRAINING\\CPP LANGUAGE\\MINI PROJECTS\\Mini_Project\\Mini_Project\\customer_data.txt";
     manager.loadCustomersFromFile(customerDataFile);
 
     int choice;
