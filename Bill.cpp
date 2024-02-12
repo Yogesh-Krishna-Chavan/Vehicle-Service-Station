@@ -1,4 +1,3 @@
-// Bill.cpp
 #include "Bill.h"
 #include <cstring>
 #include <iomanip>
@@ -17,7 +16,6 @@ Bill::Bill(const ServiceRequest &request)
     strncpy(serviceDate, request.getServiceDate(), sizeof(serviceDate) - 1);
     serviceDate[sizeof(serviceDate) - 1] = '\0';
 
-    // Calculate bill amount
     calculateBillAmount();
 }
 
@@ -70,7 +68,7 @@ void Bill::calculateBillAmount()
     }
 
     billAmount = maintenanceCharges + sparePartsCost + oilAdditivePrice;
-    billAmount += (billAmount * 12.6) / 100.0; // Add 12.6% tax
+    billAmount += (billAmount * 12.6) / 100.0;
 }
 
 std::ostream &operator<<(std::ostream &os, const Bill &bill)

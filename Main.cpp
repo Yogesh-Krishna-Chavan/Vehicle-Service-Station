@@ -11,19 +11,17 @@ int main()
     int choice;
     do
     {
-        // Display menu and get user choice
+
         std::cout << "1. New Customer\n2. New Servicing Request\n3. Today's Business\n4. Exit\n";
         std::cout << "Enter your choice: ";
 
-        // Check for input failure and clear the input buffer
         while (!(std::cin >> choice))
         {
-            std::cin.clear();                                                   // Clear error flags
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid input. Please enter a number.\n";
         }
 
-        // Handle valid choices
         switch (choice)
         {
         case 1:
@@ -42,7 +40,6 @@ int main()
             std::cout << "Invalid choice. Please enter a valid option.\n";
         }
 
-        // Clear the input buffer
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     } while (choice != 4);

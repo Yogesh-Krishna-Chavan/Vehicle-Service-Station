@@ -1,4 +1,3 @@
-// Customer.h
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
 
@@ -30,4 +29,4 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Customer &customer);
     friend std::istream &operator>>(std::istream &is, Customer &customer);
 };
-#endif // CUSTOMER_H
+#endif
