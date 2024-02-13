@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <list>
 #include "Vehicle.h"
 
 class Customer
@@ -12,7 +12,7 @@ private:
     std::string name;
     std::string address;
     std::string mobileNumber;
-    std::vector<Vehicle> vehicles;
+    std::list<Vehicle> vehicles;
 
 public:
     Customer(const std::string &nm, const std::string &addr, const std::string &mobile);
@@ -22,7 +22,7 @@ public:
     std::string getName() const;
     std::string getAddress() const;
     std::string getMobileNumber() const;
-    const std::vector<Vehicle> &getVehicles() const;
+    const std::list<Vehicle> &getVehicles() const;
 
     void addVehicle(const Vehicle &vehicle);
 

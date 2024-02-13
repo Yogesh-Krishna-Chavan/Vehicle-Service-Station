@@ -22,6 +22,11 @@ std::string Customer::getMobileNumber() const
     return mobileNumber;
 }
 
+const std::list<Vehicle> &Customer::getVehicles() const
+{
+    return vehicles;
+}
+
 void Customer::addVehicle(const Vehicle &vehicle)
 {
     vehicles.push_back(vehicle);

@@ -11,6 +11,7 @@ int main()
     int choice;
     do
     {
+        ServiceRequest loadedRequest("DefaultStation", "DefaultCustomer", "DefaultVehicle", "DefaultDate", 0.0, {}, 0.0);
 
         std::cout << "1. New Customer\n2. New Servicing Request\n3. Today's Business\n4. Exit\n";
         std::cout << "Enter your choice: ";

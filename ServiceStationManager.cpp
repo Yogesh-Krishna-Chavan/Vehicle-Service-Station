@@ -28,8 +28,7 @@ void ServiceStationManager::newCustomer()
 
     // For simplicity, let's assume the customer can have only one vehicle
     std::cout << "Enter vehicle details:\n";
-    Vehicle newVehicle("Toyota", "Camry", "ABC123");
-
+    Vehicle newVehicle; // Assuming you have a default constructor for Vehicle
     std::cin >> newVehicle;
     newCustomer.addVehicle(newVehicle);
 
@@ -40,17 +39,127 @@ void ServiceStationManager::newCustomer()
     std::cout << newVehicle;
 }
 
+void ServiceStationManager::displayCustomers(const std::string &customerName)
+{
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+
+    if (customerName.empty())
+    {
+        std::cout << "Customer List:\n";
+        for (const auto &customer : customerList)
+        {
+            std::cout << "Customer Name: " << customer.getName() << "\n";
+            std::cout << "----------------------\n";
+        }
+        return;
+    }
+
+    auto it = findCustomerByName(customerName);
+
+    if (it != customerList.end())
+    {
+        const auto &customer = *it;
+
+        std::cout << "Customer Name: " << customer.getName() << "\n";
+        std::cout << "Customer Address: " << customer.getAddress() << "\n";
+        std::cout << "Customer Mobile Number: " << customer.getMobileNumber() << "\n";
+
+        const std::list<Vehicle> vehicles = customer.getVehicles();
+        for (const auto &vehicle : vehicles)
+        {
+            std::cout << "Manufacturer: " << vehicle.getManufacturer() << "\n";
+            std::cout << "Model: " << vehicle.getModel() << "\n";
+            std::cout << "Vehicle Number: " << vehicle.getVehicleNumber() << "\n";
+        }
+
+        std::cout << "----------------------\n";
+    }
+    else
+    {
+        std::cout << "Customer not found.\n";
+    }
+}
+
 void ServiceStationManager::newServicingRequest()
 {
     // Get service request details from the user
     std::string stationName, custName, vehicleDetails, serviceDate;
     float maintenanceCharges, oilAdditivePrice;
 
+    std::cout << "1. Existing Customer\n";
+    std::cout << "2. New Customer\n";
+    std::cout << "Enter your choice: ";
+    int choice;
+    std::cin >> choice;
+
+    if (choice == 1)
+    {
+        // Display existing customers and ask for customer name
+        displayCustomers();
+        std::cout << "Enter Customer Name: ";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        std::getline(std::cin, custName);
+
+        // Debug prints
+        std::cout << "Entered Customer Name: " << custName << "\n";
+
+        auto it = findCustomerByName(custName);
+        if (it != customerList.end())
+        {
+            std::cout << "Customer found in the list!\n";
+            // Add more debug prints
+            std::cout << "Customer Name in List: " << it->getName() << "\n";
+            // Add any other relevant information
+        }
+        else
+        {
+            std::cout << "Customer not found in the list.\n";
+        }
+    }
+    else if (choice == 2)
+    {
+        // Create a new customer
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        std::cout << "Enter customer details:\n";
+        std::string name, address, mobileNumber;
+
+        std::cout << "Name: ";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        std::getline(std::cin, name);
+
+        std::cout << "Address: ";
+        std::getline(std::cin, address);
+
+        std::cout << "Mobile Number: ";
+        std::getline(std::cin, mobileNumber);
+
+        Customer newCustomer(name, address, mobileNumber);
+
+        // For simplicity, let's assume the customer can have only one vehicle
+        std::cout << "Enter vehicle details:\n";
+        Vehicle newVehicle("Toyota", "Camry", "ABC123");
+
+        std::cin >> newVehicle;
+        newCustomer.addVehicle(newVehicle);
+
+        // Add the new customer to the list
+        customerList.push_back(newCustomer);
+
+        std::cout << "New customer added successfully!\n";
+        custName = newCustomer.getName(); // Use the newly created customer's name
+    }
+    else
+    {
+        std::cout << "Invalid choice.\n";
+        return;
+    }
+
+    // Clear the input buffer after reading the choice
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    // Continue with the rest of the service request details
     std::cout << "Enter Service Station Name: ";
     std::getline(std::cin >> std::ws, stationName);
-
-    std::cout << "Enter Customer Name: ";
-    std::getline(std::cin >> std::ws, custName);
 
     std::cout << "Enter Vehicle Number: ";
     std::getline(std::cin >> std::ws, vehicleDetails);
@@ -161,6 +270,12 @@ void ServiceStationManager::storeCustomersToFile(const std::string &filename)
     for (const auto &customer : customerList)
     {
         file << customer;
+        // Write Vehicle details
+        const std::list<Vehicle> vehicles = customer.getVehicles();
+        for (const auto &vehicle : vehicles)
+        {
+            file << vehicle;
+        }
     }
 
     file.close();
@@ -168,7 +283,26 @@ void ServiceStationManager::storeCustomersToFile(const std::string &filename)
 
 std::list<Customer>::const_iterator ServiceStationManager::findCustomerByName(const std::string &name) const
 {
-    return std::find_if(customerList.begin(), customerList.end(),
-                        [&name](const Customer &customer)
-                        { return customer.getName() == name; });
+    std::cout << "Entered Customer Name: " << name << "\n";
+
+    auto it = std::find_if(customerList.begin(), customerList.end(),
+                           [&name](const Customer &customer)
+                           {
+                               std::cout << "Comparing with List Customer Name: " << customer.getName() << "\n";
+                               return customer.getName() == name;
+                           });
+
+    if (it != customerList.end())
+    {
+        std::cout << "Customer found in the list!\n";
+        // Add more debug prints to inspect the found customer and its details
+        std::cout << "Customer Name in the List: " << it->getName() << "\n";
+        // Print other customer details if needed
+    }
+    else
+    {
+        std::cout << "Customer not found in the list.\n";
+    }
+
+    return it;
 }

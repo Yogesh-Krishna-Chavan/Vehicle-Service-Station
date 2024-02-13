@@ -3,6 +3,7 @@
 
 #include <list>
 #include <chrono>
+#include "servicerequest.h"
 #include "Customer.h"
 #include "Bill.h"
 
@@ -10,6 +11,7 @@ class ServiceStationManager
 {
 public:
     void newCustomer();
+    void displayCustomers(const std::string &customerName = "");
     void newServicingRequest();
     void displayTodayBusiness();
     void loadCustomersFromFile(const std::string &filename);

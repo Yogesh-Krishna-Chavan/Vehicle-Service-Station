@@ -1,5 +1,7 @@
 #include "ServiceRequest.h"
 #include <cstring>
+#include <fstream>
+#include <iostream>
 
 ServiceRequest::ServiceRequest(const char *stationName, const char *custName, const char *vehicle,
                                const char *date, float maintenance, const std::vector<SparePart> &parts, float oilPrice)
@@ -16,6 +18,13 @@ ServiceRequest::ServiceRequest(const char *stationName, const char *custName, co
 
     // Calculate bill amount
     calculateBillAmount();
+}
+
+// Default constructor definition
+ServiceRequest::ServiceRequest()
+    : maintenanceCharges(0.0), oilAdditivePrice(0.0)
+{
+    // Initialize other members if needed
 }
 
 const char *ServiceRequest::getServiceStationName() const
@@ -68,6 +77,70 @@ void ServiceRequest::calculateBillAmount()
 
     billAmount = maintenanceCharges + sparePartsCost + oilAdditivePrice;
     billAmount += (billAmount * 12.6) / 100.0; // Add 12.6% tax
+}
+
+void ServiceRequest::saveToFile(const std::string &filename) const
+{
+    std::ofstream outFile(filename, std::ios::app); // Open file in append mode
+
+    if (outFile.is_open())
+    {
+        // Write service request data to the file
+        outFile << serviceStationName << " "
+                << customerName << " "
+                << vehicleDetails << " "
+                << serviceDate << " "
+                << maintenanceCharges << " "
+                << oilAdditivePrice << " "
+                << spareParts.size() << " ";
+
+        for (const auto &part : spareParts)
+        {
+            outFile << part << " ";
+        }
+
+        outFile << std::endl;
+
+        outFile.close();
+    }
+    else
+    {
+        std::cerr << "Error opening file for writing: " << filename << std::endl;
+    }
+}
+
+ServiceRequest ServiceRequest::loadFromFile(const std::string &filename)
+{
+    ServiceRequest loadedRequest;
+
+    std::ifstream inFile(filename);
+    if (inFile.is_open())
+    {
+        std::cout << "File opened successfully.\n";
+
+        // Read service request data from the file
+        inFile >> loadedRequest.serviceStationName >> loadedRequest.customerName >> loadedRequest.vehicleDetails >> loadedRequest.serviceDate >> loadedRequest.maintenanceCharges >> loadedRequest.oilAdditivePrice;
+
+        size_t numSpareParts;
+        inFile >> numSpareParts;
+
+        std::cout << "Reading " << numSpareParts << " spare parts.\n";
+
+        for (size_t i = 0; i < numSpareParts; ++i)
+        {
+            SparePart part;
+            inFile >> part;
+            loadedRequest.spareParts.push_back(part);
+        }
+
+        inFile.close();
+    }
+    else
+    {
+        std::cerr << "Error opening file for reading: " << filename << std::endl;
+    }
+
+    return loadedRequest;
 }
 
 std::ostream &operator<<(std::ostream &os, const ServiceRequest &request)

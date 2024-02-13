@@ -12,7 +12,7 @@ private:
 
 public:
     Vehicle(const char *manu, const char *mdl, const char *num);
-
+    Vehicle() = default;
     const char *getManufacturer() const;
     const char *getModel() const;
     const char *getVehicleNumber() const;

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "SparePart.h"
+#include "vehicle.h"
+#include <fstream>
 
 class ServiceRequest
 {
@@ -31,6 +33,12 @@ public:
     float getBillAmount() const;
 
     void calculateBillAmount();
+
+    // Default constructor declaration...
+    ServiceRequest();
+
+    void saveToFile(const std::string &filename) const;
+    static ServiceRequest loadFromFile(const std::string &filename);
 
     friend std::ostream &operator<<(std::ostream &os, const ServiceRequest &request);
 };
