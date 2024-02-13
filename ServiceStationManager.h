@@ -19,7 +19,7 @@ public:
     std::list<Customer>::const_iterator findCustomerByName(const std::string &name) const;
 
 private:
-    std::list<Customer> customerList;
+    std::list<Customer> customerList; // Doubly linked list
     std::list<Bill> billList;
 };
 #endif
