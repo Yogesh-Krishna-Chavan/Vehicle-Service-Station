@@ -34,7 +34,6 @@ public:
 
     void calculateBillAmount();
 
-    // Default constructor declaration...
     ServiceRequest();
 
     void saveToFile(const std::string &filename) const;

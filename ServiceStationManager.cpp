@@ -1,4 +1,3 @@
-// ServiceStationManager.cpp
 #include "ServiceStationManager.h"
 #include <iostream>
 #include <fstream>
@@ -10,8 +9,7 @@
 
 void ServiceStationManager::newCustomer()
 {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "Enter customer details:\n";
     std::string name, address, mobileNumber;
 
@@ -26,13 +24,11 @@ void ServiceStationManager::newCustomer()
 
     Customer newCustomer(name, address, mobileNumber);
 
-    // For simplicity, let's assume the customer can have only one vehicle
     std::cout << "Enter vehicle details:\n";
-    Vehicle newVehicle; // Assuming you have a default constructor for Vehicle
+    Vehicle newVehicle;
     std::cin >> newVehicle;
     newCustomer.addVehicle(newVehicle);
 
-    // Add the new customer to the list
     customerList.push_back(newCustomer);
 
     std::cout << "New customer added successfully!\n";
@@ -41,7 +37,7 @@ void ServiceStationManager::newCustomer()
 
 void ServiceStationManager::displayCustomers(const std::string &customerName)
 {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     if (customerName.empty())
     {
@@ -82,7 +78,6 @@ void ServiceStationManager::displayCustomers(const std::string &customerName)
 
 void ServiceStationManager::newServicingRequest()
 {
-    // Get service request details from the user
     std::string stationName, custName, vehicleDetails, serviceDate;
     float maintenanceCharges, oilAdditivePrice;
 
@@ -94,22 +89,20 @@ void ServiceStationManager::newServicingRequest()
 
     if (choice == 1)
     {
-        // Display existing customers and ask for customer name
+
         displayCustomers();
         std::cout << "Enter Customer Name: ";
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, custName);
 
-        // Debug prints
         std::cout << "Entered Customer Name: " << custName << "\n";
 
         auto it = findCustomerByName(custName);
         if (it != customerList.end())
         {
             std::cout << "Customer found in the list!\n";
-            // Add more debug prints
+
             std::cout << "Customer Name in List: " << it->getName() << "\n";
-            // Add any other relevant information
         }
         else
         {
@@ -118,13 +111,13 @@ void ServiceStationManager::newServicingRequest()
     }
     else if (choice == 2)
     {
-        // Create a new customer
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Enter customer details:\n";
         std::string name, address, mobileNumber;
 
         std::cout << "Name: ";
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::getline(std::cin, name);
 
         std::cout << "Address: ";
@@ -135,18 +128,16 @@ void ServiceStationManager::newServicingRequest()
 
         Customer newCustomer(name, address, mobileNumber);
 
-        // For simplicity, let's assume the customer can have only one vehicle
         std::cout << "Enter vehicle details:\n";
         Vehicle newVehicle("Toyota", "Camry", "ABC123");
 
         std::cin >> newVehicle;
         newCustomer.addVehicle(newVehicle);
 
-        // Add the new customer to the list
         customerList.push_back(newCustomer);
 
         std::cout << "New customer added successfully!\n";
-        custName = newCustomer.getName(); // Use the newly created customer's name
+        custName = newCustomer.getName();
     }
     else
     {
@@ -154,10 +145,8 @@ void ServiceStationManager::newServicingRequest()
         return;
     }
 
-    // Clear the input buffer after reading the choice
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    // Continue with the rest of the service request details
     std::cout << "Enter Service Station Name: ";
     std::getline(std::cin >> std::ws, stationName);
 
@@ -170,7 +159,6 @@ void ServiceStationManager::newServicingRequest()
     std::cout << "Enter Maintenance Charges: $";
     std::cin >> maintenanceCharges;
 
-    // Get spare parts details from the user
     std::vector<SparePart> spareParts;
     int numSpareParts;
 
@@ -188,7 +176,6 @@ void ServiceStationManager::newServicingRequest()
     std::cout << "Enter Oil/Additive Price: $";
     std::cin >> oilAdditivePrice;
 
-    // Create a new ServiceRequest object
     ServiceRequest newRequest(
         stationName.c_str(),
         custName.c_str(),
@@ -198,7 +185,6 @@ void ServiceStationManager::newServicingRequest()
         spareParts,
         oilAdditivePrice);
 
-    // Add the new service request to the list
     billList.push_back(Bill(newRequest));
 
     std::cout << "New servicing request added successfully!\n";
@@ -206,28 +192,24 @@ void ServiceStationManager::newServicingRequest()
 
 void ServiceStationManager::displayTodayBusiness()
 {
-    // Get the current date
+
     auto today = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string todayStr = std::ctime(&today);
 
-    // Remove the newline character from todayStr
     todayStr.erase(std::remove(todayStr.begin(), todayStr.end(), '\n'), todayStr.end());
 
-    // Display today's date
     std::cout << "Today's Date: " << todayStr << "\n";
 
-    // Iterate through the billList and calculate total cash collection
     float totalCashCollection = 0.0;
     for (const auto &bill : billList)
     {
-        // Check if the bill's service date matches today's date
+
         if (std::string(bill.getServiceDate()) == todayStr)
         {
             totalCashCollection += bill.getBillAmount();
         }
     }
 
-    // Display total cash collection
     std::cout << "Today's Cash Collection: $" << std::fixed << std::setprecision(2) << totalCashCollection << "\n";
 }
 
@@ -270,7 +252,7 @@ void ServiceStationManager::storeCustomersToFile(const std::string &filename)
     for (const auto &customer : customerList)
     {
         file << customer;
-        // Write Vehicle details
+
         const std::list<Vehicle> vehicles = customer.getVehicles();
         for (const auto &vehicle : vehicles)
         {
@@ -295,9 +277,8 @@ std::list<Customer>::const_iterator ServiceStationManager::findCustomerByName(co
     if (it != customerList.end())
     {
         std::cout << "Customer found in the list!\n";
-        // Add more debug prints to inspect the found customer and its details
+
         std::cout << "Customer Name in the List: " << it->getName() << "\n";
-        // Print other customer details if needed
     }
     else
     {

@@ -16,15 +16,12 @@ ServiceRequest::ServiceRequest(const char *stationName, const char *custName, co
     strncpy(serviceDate, date, sizeof(serviceDate) - 1);
     serviceDate[sizeof(serviceDate) - 1] = '\0';
 
-    // Calculate bill amount
     calculateBillAmount();
 }
 
-// Default constructor definition
 ServiceRequest::ServiceRequest()
     : maintenanceCharges(0.0), oilAdditivePrice(0.0)
 {
-    // Initialize other members if needed
 }
 
 const char *ServiceRequest::getServiceStationName() const
@@ -81,11 +78,11 @@ void ServiceRequest::calculateBillAmount()
 
 void ServiceRequest::saveToFile(const std::string &filename) const
 {
-    std::ofstream outFile(filename, std::ios::app); // Open file in append mode
+    std::ofstream outFile(filename, std::ios::app);
 
     if (outFile.is_open())
     {
-        // Write service request data to the file
+
         outFile << serviceStationName << " "
                 << customerName << " "
                 << vehicleDetails << " "
@@ -118,7 +115,6 @@ ServiceRequest ServiceRequest::loadFromFile(const std::string &filename)
     {
         std::cout << "File opened successfully.\n";
 
-        // Read service request data from the file
         inFile >> loadedRequest.serviceStationName >> loadedRequest.customerName >> loadedRequest.vehicleDetails >> loadedRequest.serviceDate >> loadedRequest.maintenanceCharges >> loadedRequest.oilAdditivePrice;
 
         size_t numSpareParts;
